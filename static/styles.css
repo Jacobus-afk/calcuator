@@ -1,0 +1,108 @@
+@font-face {
+    font-family: 'Seven-Segment';
+    src: url('digital-7.ttf')
+}
+
+:root {
+    font-family: 'Roboto', sans-serif;
+    font-size: 28px;
+}
+
+#calculator {
+    display: grid;
+    grid-template-columns: 50px 50px 50px 50px;
+    gap: 5px;
+    grid-template-rows: 60px 50px 50px 50px 50px 50px;
+    grid-template-areas:
+        "screen screen screen screen"
+        "seven eight nine divide"
+        "four five six multiply"
+        "one two three minus"
+        "dot zero zero plus"
+        "clear clear equals plus";
+}
+
+.buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    border: solid;
+}
+
+.operations {
+
+    background-color: grey;
+    font-size: 35px;
+}
+
+.keypad {
+
+    background-color: lightblue;
+}
+
+#screen{
+    border: black solid;
+    font-size: 50px;
+    color: lime;
+    grid-area: screen;
+    background-color: black;
+    font-family: 'Seven-Segment', 'Roboto', sans-serif;
+}
+#screen-text{
+    margin-bottom: 3px;
+}
+#add{
+    grid-area: plus;
+}
+#subtract{
+    grid-area: minus;
+}
+#multiply{
+    grid-area: multiply;
+}
+#divide{
+    grid-area: divide;
+}
+#equals{
+    grid-area: equals;
+    font-stretch: wider;
+    font-size: 60px;
+}
+#clear{
+    background-color: darkred;
+    grid-area: clear;
+}
+#one{
+    grid-area: one;
+}
+#two{
+    grid-area: two;
+}
+#three{
+    grid-area: three;
+}
+#four{
+    grid-area: four;
+}
+#five{
+    grid-area: five;
+}
+#six{
+    grid-area: six;
+}
+#seven{
+    grid-area: seven;
+}
+#eight{
+    grid-area: eight;
+}
+#nine{
+    grid-area: nine;
+}
+#zero{
+    grid-area: zero;
+}
+#dot{
+    grid-area: dot;
+}
