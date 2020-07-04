@@ -48,6 +48,7 @@
     grid-area: screen;
     background-color: black;
     font-family: 'Seven-Segment', 'Roboto', sans-serif;
+    justify-content: flex-end;
 }
 #screen-text{
     margin-bottom: 3px;
