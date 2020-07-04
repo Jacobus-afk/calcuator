@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const operations = document.querySelectorAll(".operations");
     const keypad = document.querySelectorAll(".keypad");
     const screen = document.querySelector("#screen-text");
+    const clear = document.querySelector("#clear");
     let humanReadableRegister = [];
     let reversePolishOutputQueue = [];
 
@@ -39,7 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function generateReversePolishNotation() {
         // note on associativity: for this simple calculator we dont have to deal with power, 
-        // thus all associativity is left?
+        // thus all associativity is left
         // https://en.wikipedia.org/wiki/Shunting-yard_algorithm#The_algorithm_in_detail
         // https://www.thepolyglotdeveloper.com/2015/03/parse-with-the-shunting-yard-algorithm-using-javascript/
         const operators = {
@@ -70,6 +71,29 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+    function refreshScreen(value) {
+        value = String(value);
+        if (value.length > 9) {
+            value = value.substring(0,9);
+        }
+        screen.textContent = value; //humanReadableRegister.endIndex();
+    }
+
+    function clearOperation() {
+        humanReadableRegister = [];
+        reversePolishOutputQueue = [];
+    }
+
+    function operate() {
+        // console.log(humanReadableRegister);
+        generateReversePolishNotation();
+        // console.log(reversePolishOutputQueue);
+        const result = solveReversePolishEquation();
+        // console.log(result);
+        refreshScreen(result);
+        clearOperation();
+    }
+
     function addNumber(number) {
         // let registerEndIndex = register.length - 1;
 
@@ -77,6 +101,9 @@ document.addEventListener("DOMContentLoaded", () => {
         // console.log(register.endIndex());
         // if (register.endIndex().isNumeric()) {
         if (!isNaN(humanReadableRegister.endIndex())) { //if last entry in register is number append value
+            if ((number === ".")&&(humanReadableRegister.endIndex().includes("."))) {
+                return;
+            }
             humanReadableRegister[humanReadableRegister.length - 1] += String(number);
             // register.endIndex() += String(number);
         }
@@ -84,10 +111,10 @@ document.addEventListener("DOMContentLoaded", () => {
             humanReadableRegister.push(String(number));
             // registerEndIndex++;
         }
-        screen.textContent = humanReadableRegister.endIndex();
+        refreshScreen(humanReadableRegister.endIndex());
+        // console.log(humanReadableRegister);
+        // screen.textContent = humanReadableRegister.endIndex();
     }
-
-
 
     function addOperation(operation) {
         const operators = {
@@ -100,15 +127,14 @@ document.addEventListener("DOMContentLoaded", () => {
         
         // if (!register.endIndex().isNumeric()) {
         if (isNaN(humanReadableRegister.endIndex())) {
-            console.log("invalid operation. can't have two operations without numbers between them");
+            refreshScreen("Invalid");
+            clearOperation();
+            // console.log("invalid operation. can't have two operations without numbers between them");
             return;
         }
         if (operation === "equals") {
             // console.log("still need to handle equals");
-            console.log(humanReadableRegister);
-            generateReversePolishNotation();
-            console.log(reversePolishOutputQueue);
-            console.log(solveReversePolishEquation());
+            operate();
             return;
         }
         humanReadableRegister.push(operators[operation]);
@@ -117,15 +143,19 @@ document.addEventListener("DOMContentLoaded", () => {
     for (let i = 0; i < operations.length; i++) {
         operations[i].addEventListener("click", event => {
             addOperation(event.srcElement.id);
-            console.log(event.srcElement.id);
+            // console.log(event.srcElement.id);
         })
     }
 
     for (let i = 0; i < keypad.length; i++) {
         keypad[i].addEventListener("click", event => {
             addNumber(event.target.textContent);
-            console.log(event.target.textContent);
+            // console.log(event.target.textContent);
         })
     }
 
+    clear.addEventListener("click", event => {
+        refreshScreen("0");
+        clearOperation();
+    })
 })
